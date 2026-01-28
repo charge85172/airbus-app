@@ -35,13 +35,13 @@ Deze applicatie bestaat uit twee delen: de Backend (`airbus-api`) en de Frontend
     ```env
     MONGODB_URI=mongodb://127.0.0.1:27017/airbus-api
     EXPRESS_PORT=8000
-    BASE_URI=http://localhost:8000
+    BASE_URI=http://145.23.237.24:8000
     ```
 4.  Start de server:
     ```bash
     npm run dev
     ```
-    *De server draait nu op `http://localhost:8000`.*
+    *De server draait nu op `http://145.23.237.24:8000`.*
 
 ### Stap 2: Frontend Setup (App)
 

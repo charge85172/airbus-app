@@ -19,7 +19,7 @@ function Edit() {
     useEffect(() => {
         async function fetchPlane() {
             try {
-                const response = await fetch(`http://localhost:8000/aircraft/${id}`, {
+                const response = await fetch(`http://145.23.237.24:8000/aircraft/${id}`, {
                     headers: {'Accept': 'application/json'}
                 });
                 const data = await response.json();
@@ -53,7 +53,7 @@ function Edit() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:8000/aircraft/${id}`, {
+            const response = await fetch(`http://145.23.237.24:8000/aircraft/${id}`, {
                 method: 'PUT', // <--- LET OP: PUT i.p.v. POST
                 headers: {
                     'Content-Type': 'application/json',

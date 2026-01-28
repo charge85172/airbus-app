@@ -16,7 +16,7 @@ function Home() {
         setLoading(true);
         try {
             // We halen 5 vliegtuigen per keer op
-            const response = await fetch(`http://localhost:8000/aircraft?page=${currentPage}&limit=5`, {
+            const response = await fetch(`http://145.23.237.24:8000/aircraft?page=${currentPage}&limit=5`, {
                 headers: {'Accept': 'application/json'}
             });
 

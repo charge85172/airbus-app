@@ -14,7 +14,7 @@ function Detail() {
 
     async function fetchPlane() {
         try {
-            const response = await fetch(`http://localhost:8000/aircraft/${id}`, {
+            const response = await fetch(`http://145.23.237.24:8000/aircraft/${id}`, {
                 headers: {'Accept': 'application/json'}
             });
             if (!response.ok) throw new Error("Vliegtuig niet gevonden!");
@@ -30,7 +30,7 @@ function Detail() {
     async function handleDelete() {
         if (!confirm("Weet je zeker dat je dit vliegtuig wilt slopen? 🏗️")) return;
         try {
-            await fetch(`http://localhost:8000/aircraft/${id}`, {
+            await fetch(`http://145.23.237.24:8000/aircraft/${id}`, {
                 method: 'DELETE',
                 headers: {'Accept': 'application/json'}
             });

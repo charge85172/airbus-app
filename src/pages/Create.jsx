@@ -23,7 +23,7 @@ function Create() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:8000/aircraft', {
+            const response = await fetch('http://145.23.237.24:8000/aircraft', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
