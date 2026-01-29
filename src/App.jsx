@@ -3,6 +3,7 @@ import Home from './pages/Home';
 import Create from './pages/Create';
 import Detail from './pages/Detail';
 import Edit from './pages/Edit'
+import NotFound from './pages/NotFound';
 
 function App() {
     return (
@@ -26,6 +27,7 @@ function App() {
                     <Route path="/create" element={<Create/>}/>
                     <Route path="/aircraft/:id" element={<Detail/>}/>
                     <Route path="/edit/:id" element={<Edit/>}/>
+                    <Route path="*" element={<NotFound/>}/>
                 </Routes>
             </div>
         </div>

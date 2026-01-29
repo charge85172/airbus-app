@@ -1,5 +1,6 @@
 import {useState, useEffect} from "react";
 import {useParams, useNavigate, Link} from "react-router";
+import {API_BASE_URL} from "../config";
 
 function Detail() {
     const {id} = useParams();
@@ -14,7 +15,7 @@ function Detail() {
 
     async function fetchPlane() {
         try {
-            const response = await fetch(`http://145.23.237.24:8000/aircraft/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/aircraft/${id}`, {
                 headers: {'Accept': 'application/json'}
             });
             if (!response.ok) throw new Error("Vliegtuig niet gevonden!");
@@ -28,20 +29,32 @@ function Detail() {
     }
 
     async function handleDelete() {
-        if (!confirm("Weet je zeker dat je dit vliegtuig wilt slopen? 🏗️")) return;
-        try {
-            await fetch(`http://145.23.237.24:8000/aircraft/${id}`, {
-                method: 'DELETE',
-                headers: {'Accept': 'application/json'}
-            });
-            navigate('/');
-        } catch (e) {
-            alert("Verwijderen mislukt!");
+        if (window.confirm("Weet je zeker dat je dit vliegtuig wilt slopen? 🏗️")) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/aircraft/${id}`, {
+                    method: 'DELETE',
+                    headers: {'Accept': 'application/json'}
+                });
+
+                if (response.ok) {
+                    navigate('/');
+                } else {
+                    alert("Verwijderen mislukt!");
+                }
+            } catch (e) {
+                console.error("Delete error:", e);
+                alert("Er ging iets mis bij het verwijderen.");
+            }
         }
     }
 
     if (loading) return <p className="text-center mt-10 text-blue-500 animate-pulse">Checking flight data... 📡</p>;
-    if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
+    if (error) return (
+        <div className="text-center mt-10">
+            <p className="text-red-500 text-xl font-bold mb-4">{error}</p>
+            <Link to="/" className="text-blue-600 hover:underline">Terug naar Hangar</Link>
+        </div>
+    );
 
     return (
         <div className="max-w-2xl mx-auto p-6 mt-10">
@@ -52,7 +65,11 @@ function Detail() {
             <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-blue-100">
                 <div className="bg-blue-900 text-white p-6 flex justify-between items-center">
                     <h1 className="text-3xl font-bold">{plane.model}</h1>
-                    <span className="bg-white text-blue-900 px-3 py-1 rounded-full text-sm font-bold">
+                    <span className={`px-3 py-1 rounded-full text-sm font-bold ${
+                        plane.status === 'Active' ? 'bg-green-100 text-green-800' :
+                            plane.status === 'Maintenance' ? 'bg-orange-100 text-orange-800' :
+                                'bg-gray-100 text-gray-800'
+                    }`}>
                         {plane.status}
                     </span>
                 </div>

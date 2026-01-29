@@ -1,5 +1,6 @@
 import {useState} from 'react';
-import {useNavigate} from 'react-router'; // Of 'react-router-dom' als je v6 gebruikt
+import {useNavigate} from 'react-router';
+import {API_BASE_URL} from "../config";
 
 function Create() {
     const navigate = useNavigate();
@@ -7,23 +8,33 @@ function Create() {
         model: '',
         registration: '',
         airline: '',
-        status: 'Active' // Standaard waarde
+        status: 'Active'
     });
     const [error, setError] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Update de state als je typt
     const handleChange = (e) => {
+        const {name, value} = e.target;
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value
+            [name]: name === 'status' ? value : value.toUpperCase()
         });
     };
 
-    // Verstuur naar de API
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsSubmitting(true);
+        setError(null);
+
+        // Extra client-side validatie (voor de zekerheid)
+        if (!formData.model || !formData.registration || !formData.airline) {
+            setError("Vul alle velden in!");
+            setIsSubmitting(false);
+            return;
+        }
+
         try {
-            const response = await fetch('http://145.23.237.24:8000/aircraft', {
+            const response = await fetch(`${API_BASE_URL}/aircraft`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -37,11 +48,12 @@ function Create() {
                 throw new Error(errorData.error || 'Er ging iets mis!');
             }
 
-            // Succes! Ga terug naar de hangar
             navigate('/');
 
         } catch (err) {
             setError(err.message);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -93,9 +105,10 @@ function Create() {
 
                 <button
                     type="submit"
-                    className="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition"
+                    disabled={isSubmitting}
+                    className="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition disabled:opacity-50"
                 >
-                    Toevoegen aan Hangar 🚀
+                    {isSubmitting ? 'Bezig met toevoegen...' : 'Toevoegen aan Hangar 🚀'}
                 </button>
             </form>
         </div>
