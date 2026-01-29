@@ -5,14 +5,17 @@ import {API_BASE_URL} from "../config";
 function Detail() {
     const {id} = useParams();
     const navigate = useNavigate();
+    // State for the queen herself
     const [plane, setPlane] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Fetching the tea when the ID changes
     useEffect(() => {
         fetchPlane();
     }, [id]);
 
+    // Manifesting the plane details
     async function fetchPlane() {
         try {
             const response = await fetch(`${API_BASE_URL}/aircraft/${id}`, {
@@ -28,6 +31,7 @@ function Detail() {
         }
     }
 
+    // Yeeting the plane out of existence
     async function handleDelete() {
         if (window.confirm("Weet je zeker dat je dit vliegtuig wilt slopen? 🏗️")) {
             try {
@@ -48,13 +52,19 @@ function Detail() {
         }
     }
 
+    // Loading state - hold up, let her cook
     if (loading) return <p className="text-center mt-10 text-blue-500 animate-pulse">Checking flight data... 📡</p>;
+
+    // Error state - flop era
     if (error) return (
         <div className="text-center mt-10">
             <p className="text-red-500 text-xl font-bold mb-4">{error}</p>
             <Link to="/" className="text-blue-600 hover:underline">Terug naar Hangar</Link>
         </div>
     );
+
+    // FIX: Using _id as fallback because the backend be playing games
+    const planeId = plane.id || plane._id;
 
     return (
         <div className="max-w-2xl mx-auto p-6 mt-10">
@@ -82,17 +92,17 @@ function Detail() {
                             className="font-bold text-lg">{plane.airline}</p></div>
                     </div>
 
-                    {/* ✨ HIER ZIJN DE KNOPPEN ✨ */}
+                    {/* ACTION BUTTONS - Time to choose */}
                     <div className="flex gap-4 mt-8 pt-4 border-t">
-                        {/* 1. Edit Knop */}
+                        {/* 1. Edit Button - Glow up time */}
                         <Link
-                            to={`/edit/${plane.id}`}
+                            to={`/edit/${planeId}`}
                             className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white text-center font-bold py-2 rounded transition"
                         >
                             ✏️ Bewerken
                         </Link>
 
-                        {/* 2. Delete Knop */}
+                        {/* 2. Delete Button - Bye Felicia */}
                         <button
                             onClick={handleDelete}
                             className="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-2 rounded transition"

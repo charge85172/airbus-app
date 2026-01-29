@@ -4,6 +4,7 @@ import {API_BASE_URL} from "../config";
 
 function Create() {
     const navigate = useNavigate();
+    // Setting up the form state, keeping it fresh
     const [formData, setFormData] = useState({
         model: '',
         registration: '',
@@ -13,20 +14,23 @@ function Create() {
     const [error, setError] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    // Handling changes like a pro
     const handleChange = (e) => {
         const {name, value} = e.target;
         setFormData({
             ...formData,
+            // Uppercasing the input because we shoutin', except for status
             [name]: name === 'status' ? value : value.toUpperCase()
         });
     };
 
+    // Submitting the new creation to the universe
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
         setError(null);
 
-        // Extra client-side validatie (voor de zekerheid)
+        // Client-side validation check, gatekeeping empty forms
         if (!formData.model || !formData.registration || !formData.airline) {
             setError("Vul alle velden in!");
             setIsSubmitting(false);
@@ -34,6 +38,7 @@ function Create() {
         }
 
         try {
+            // Sending the tea to the backend
             const response = await fetch(`${API_BASE_URL}/aircraft`, {
                 method: 'POST',
                 headers: {
@@ -48,9 +53,11 @@ function Create() {
                 throw new Error(errorData.error || 'Er ging iets mis!');
             }
 
+            // Navigating back to home base, mission accomplished
             navigate('/');
 
         } catch (err) {
+            // Spilling the error tea
             setError(err.message);
         } finally {
             setIsSubmitting(false);

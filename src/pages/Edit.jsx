@@ -6,6 +6,7 @@ function Edit() {
     const {id} = useParams();
     const navigate = useNavigate();
 
+    // State for the form, keeping it 100
     const [formData, setFormData] = useState({
         model: '',
         registration: '',
@@ -16,6 +17,7 @@ function Edit() {
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState(null);
 
+    // Fetching the OG data to pre-fill the form
     useEffect(() => {
         async function fetchPlane() {
             try {
@@ -41,6 +43,7 @@ function Edit() {
         fetchPlane();
     }, [id]);
 
+    // Handling input changes, keeping the vibe check
     const handleChange = (e) => {
         const {name, value} = e.target;
         setFormData({
@@ -49,6 +52,7 @@ function Edit() {
         });
     };
 
+    // Submitting the glow up
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmitting(true);
@@ -66,6 +70,7 @@ function Edit() {
 
             if (!response.ok) throw new Error("Update mislukt!");
 
+            // Back to the detail page, showing off the new look
             navigate(`/aircraft/${id}`);
 
         } catch (err) {
